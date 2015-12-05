@@ -15,7 +15,7 @@ describe('Controllers', function(){
     });
 
     it("debo fallar",function () {
-        //console.log("tiene que mostrar algo");
+        console.log("tiene que mostrar algo");
         expect(true).toEqual(false);
     });
 });
