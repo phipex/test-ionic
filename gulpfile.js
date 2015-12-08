@@ -7,6 +7,7 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var karma = require('karma').server;
+var istanbul = require('gulp-istanbul');
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -38,14 +39,27 @@ gulp.task('install', ['git-check'], function() {
     });
 });
 
+gulp.task('pre-test', function () {
+  return gulp.src(['/www/js/**/*.js'])
+    // Covering files
+    .pipe(istanbul({includeUntested: true}))
+    // Force `require` to return covered files
+    .pipe(istanbul.hookRequire())
+    // Write the covered files to a temporary directory
+    .pipe(gulp.dest('test-tmp/'));
+});
+
 /**
 * Test task, run test once and exit
 */
-gulp.task('test', function(done) {
+gulp.task('test',['pre-test'],function(done) {
     karma.start({
         configFile: __dirname + '/tests/my.conf.js',
         singleRun: true
     }, function() {
+      gulp.src('/test/assert/**/*.js') 
+      .pipe(istanbul({includeUntested: true}))    
+      .pipe(istanbul.writeReports());
         done();
     });
 });

@@ -25,4 +25,16 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+  $scope.contar=function (pasto) {
+    var res = 1;
+    if (true) {
+      console.log("siempre pasa por aqui");
+    } else{
+      console.log("nunca pasa por aqui");
+    };
+
+    return res;
+  };
 });
+
+
